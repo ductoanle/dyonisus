@@ -1,6 +1,7 @@
 request = require('request')
 url = require('url')
 config = require('../config')
+Product = require('../models/product')
 
 products_path = '/products'
 product_path = '/product'
@@ -30,5 +31,6 @@ products_request = (req) ->
   console.log request_options
   request request_options, (err, response, body) ->
     console.log response
+    Product.fromJson response
 
 module.exports = products_request
