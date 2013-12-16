@@ -21,7 +21,6 @@ module.exports.start = (port, address) ->
     app.use(express.errorHandler());
   app.get '/products', products_route
 
-
   http.createServer(app).listen(port, ->
     console.log "Express server listening on port #{port}"
   )

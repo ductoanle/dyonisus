@@ -28,9 +28,9 @@ products_request = (req) ->
         method: 'POST'
         form: body_json
 
-  console.log request_options
   request request_options, (err, response, body) ->
-    console.log response
-    Product.fromJson response
+    products = Product.fromJSON response.body
+    product = Product.create(products[10])
+    console.log product.name
 
 module.exports = products_request
