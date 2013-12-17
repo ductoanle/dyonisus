@@ -6,7 +6,7 @@ Product = require('../models/product')
 products_path = '/products'
 product_path = '/product'
 
-products_request = (req, res) ->
+index = (req, res) ->
   category_id = req.params.category_id
   query_params = {}
   query_params[config.web_route_param] = config.web_route_value_prefix + products_path
@@ -38,7 +38,7 @@ products_request = (req, res) ->
     res.write responseBody
     res.end()
 
-product_request = (req, res) ->
+show = (req, res) ->
   product_id = req.params.id
   console.log product_id
   query_params = {}
@@ -66,7 +66,7 @@ product_request = (req, res) ->
     responseBody = JSON.stringify productObj
     console.log responseBody
     res.writeHead 200
-    res.write responseBody
+    res.write productObj
     res.end()
   
 
