@@ -8,10 +8,14 @@ class Product
   	@.price = price
 
   @create: (productObj) ->
-  	images = 
-  		thumb: productObj.thumb
-  		full: productObj.thumb
-  	
+  	if productObj.thumb?
+  		images = 
+  			thumb: productObj.thumb
+  			full: productObj.thumb
+  	else
+  		images = 
+  			thumb: productObj.image
+  			full: productObj.image
   	new Product(productObj.id, productObj.name, productObj.description, JSON.stringify(images), productObj.price)  	
 
   @createProductList: (productObjs)	->
@@ -22,11 +26,11 @@ class Product
   	productList
 
   @productsFromJSON: (jsonStr) ->
-  	json = JSON.parse jsonStr
-  	if json.success == 1
-  		json.products
-  	else
-  		[]	
+    json = JSON.parse jsonStr
+    if json.success == 1
+    	json.products
+    else
+    	[]	
 
   @productFromJSON: (jsonStr) ->
   	json = JSON.parse jsonStr

@@ -38,9 +38,8 @@ index = (req, res) ->
     res.write responseBody
     res.end()
 
-show = (req, res) ->
+show = (req, callback) ->
   product_id = req.params.id
-  console.log product_id
   query_params = {}
   query_params[config.web_route_param] = config.web_route_value_prefix + product_path
 
@@ -60,15 +59,11 @@ show = (req, res) ->
         method: 'POST'
         form: body_json
   request request_options, (err, response, body) ->
-    console.log response.body
     productObj = Product.productFromJSON response.body    
-    console.log productObj
-    responseBody = JSON.stringify productObj
-    console.log responseBody
-    res.writeHead 200
-    res.write productObj
-    res.end()
+    product = Product.create productObj
+    responseBody = JSON.stringify product
+    callback responseBody
   
 
-module.exports.get_products = products_request
-module.exports.get_product = product_request
+module.exports.index = index
+module.exports.show = show
