@@ -31,15 +31,12 @@ index = (req, res) ->
   request request_options, (err, response, body) ->
     productObjs = Product.productsFromJSON response.body
     products = Product.createProductList(productObjs)
-    console.log products
     responseBody = JSON.stringify products
-    console.log responseBody
     res.writeHead 200
     res.write responseBody
     res.end()
 
-show = (req, callback) ->
-  product_id = req.params.id
+show = (product_id, callback) ->
   query_params = {}
   query_params[config.web_route_param] = config.web_route_value_prefix + product_path
 
@@ -51,7 +48,7 @@ show = (req, callback) ->
     query: query_params
   request_url = url.format options
   body_json = {}
-  body_json["id"] = 259
+  body_json["id"] = product_id
   body_json["key"] = config.web_api_key
 
   request_options =
@@ -61,8 +58,7 @@ show = (req, callback) ->
   request request_options, (err, response, body) ->
     productObj = Product.productFromJSON response.body    
     product = Product.create productObj
-    responseBody = JSON.stringify product
-    callback responseBody
+    callback product
   
 
 module.exports.index = index

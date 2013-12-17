@@ -1,32 +1,23 @@
 async = require('async')
+featured_list = require('../static/featured_list')
 
 product_request = require ('../requests/products')
 
-execute = (err, results, response) ->
-		console.log "Results #{results}"
-		#res.writeHead 200
-		#responseBody = JSON.stringify(results)
-		#res.write responseBody
-		#res.end()
-
 index = (request, response) ->
-	async.parallel([
-			(execute) ->
+	request_functions = []
+	for feature_item in featured_list 
+		do (feature_item) ->
+			request_functions.push (callback) ->
 				setTimeout(->
-					#product_request.show(request, (result) ->
-					#	console.log result
-					#	execute null, result, response	
-					#)
-					execute null, "1", response
-				, 2000)
-			,(execute) ->
-				setTimeout(->
-					#product_request.show(request, (result) ->
-					#	console.log result
-					#	execute null, result, response
-					#)
-					execute null, "2", response
-				, 2000)
-		])
+					product_request.show(feature_item, (result) ->
+            			callback null, result
+					)
+				, 2000)	
+	async.parallel(request_functions, (err, results) ->
+									      response.writeHead 200
+									      responseBody = JSON.stringify(results)
+									      response.write responseBody
+									      response.end()
+  )
 		
 module.exports.index = index

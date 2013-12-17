@@ -33,11 +33,13 @@ class Product
     	[]	
 
   @productFromJSON: (jsonStr) ->
-  	json = JSON.parse jsonStr
-  	if json.success == 1
-  		json.product
-  	else
-  		nil
+    console.log jsonStr
+    json = JSON.parse jsonStr
+    if json.success == 1
+      json.product
+    else
+      null
+    
   toJSON: ->
   	json =
   		id: @.id
