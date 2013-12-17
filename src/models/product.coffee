@@ -1,37 +1,45 @@
 class Product 
   
-  constructor: (id, name, description, image, price) ->
+  constructor: (id, name, description, images, price) ->
   	@.id = id
   	@.name = name
   	@.description = description
-  	@.image = image
+  	@.images = images
   	@.price = price
 
   @create: (productObj) ->
-  	new Product(productObj.id, productObj.name, productObj.description, productObj.image, productObj.price)  	
+  	images = 
+  		thumb: productObj.thumb
+  		full: productObj.thumb
+  	
+  	new Product(productObj.id, productObj.name, productObj.description, JSON.stringify(images), productObj.price)  	
 
-  @fromJSON: (jsonStr) ->
+  @createProductList: (productObjs)	->
+  	productList = new Array()
+  	for productObj in productObjs
+  		do (productObj) ->
+  			productList.push(Product.create(productObj))
+  	productList
+
+  @productsFromJSON: (jsonStr) ->
   	json = JSON.parse jsonStr
   	if json.success == 1
   		json.products
   	else
+  		[]	
+
+  @productFromJSON: (jsonStr) ->
+  	json = JSON.parse jsonStr
+  	if json.success == 1
+  		json.product
+  	else
   		nil
-
-  id: ->
-  	@.id
-  
-  name: ->
-  	@.name
-
-  description: ->
-  	@.description
-
-  image: ->
-  	@.image
-
-  price: ->
-  	@.price  	
+  toJSON: ->
+  	json =
+  		id: @.id
+  		name: @.name
+  		description: @.description
+  		images: @.images
+  		price: @.price
 	  		
 module.exports = Product
-
-

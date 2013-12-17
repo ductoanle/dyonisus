@@ -3,6 +3,7 @@ http = require('http')
 path = require('path')
 
 products_route = require('./routes/products')
+features_route = require('./routes/features')
 
 module.exports.start = (port, address) ->
   app = express()
@@ -20,6 +21,7 @@ module.exports.start = (port, address) ->
   if ('development' == app.get('env'))
     app.use(express.errorHandler());
   app.get '/products', products_route
+  app.get '/features', features_route
 
   http.createServer(app).listen(port, ->
     console.log "Express server listening on port #{port}"
